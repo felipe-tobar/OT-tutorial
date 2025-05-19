@@ -1,4 +1,4 @@
-# Optimal Transport for Signal Processing
+# A tutorial on Optimal Transport
 ## A Tutorial at the IEEE International Workshop on Machine Learning for Signal Processing
 
 This is the repository for the Tutorial on Optimal Transport for Signal Processing. The tutorial will be presented on 22 Sept 2024 at MLSP, which will take place at Imperial College (South Kensington Campus). 
