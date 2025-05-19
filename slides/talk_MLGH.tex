@@ -6,7 +6,7 @@
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{caption}[numbered]
 
-\title[Tobar, A hands-on tutorial on Optimal Transport]{A hands-on tutorial on Optimal Transport\\ \vspace{1em} \large{\it Machine Learning Global Health network}
+\title[Tobar, A hands-on tutorial on Optimal Transport]{A hands-on tutorial on Optimal Transport
 }
 \author[]{Felipe Tobar}
 \institute[]{Department of Mathematics \& I-X\\ Imperial College London}
@@ -25,15 +25,15 @@
     }
     }
 
-    \begin{textblock}{0.45}(0.65,0.13)
+    \begin{textblock}{0.45}(0.65,0.2)
         \begin{figure}
-            \includegraphics[trim={7cm 5cm 1cm 1cm},clip, height=0.4\textwidth]{../img/ex1_result.pdf}
+            \includegraphics[trim={7cm 5cm 1cm 1cm},clip, height=0.45\textwidth]{../img/ex1_result.pdf}
         \end{figure}
     \end{textblock}
 
-    \begin{textblock}{0.45}(-0.05,0.13)
+    \begin{textblock}{0.45}(-0.05,0.2)
         \begin{figure}
-            \includegraphics[trim={1cm 5cm 6.5cm 1cm},clip, height=0.4\textwidth]{../img/ex1_result.pdf}
+            \includegraphics[trim={1cm 5cm 6.5cm 1cm},clip, height=0.45\textwidth]{../img/ex1_result.pdf}
         \end{figure}
     \end{textblock}
 
@@ -55,9 +55,9 @@
     \item Based on the Tutorial \bblue{Optimal Transport for Signal Processing} given at IEEE MLSP 2024 w/ Laetitia Chapel
     \item Examples based on \bblue{POT: Python Optimal Transport Toolbox} (\href{https://pythonot.github.io/}{\texttt{pythonot.github.io}})
     \item Tutorial repository: \bblue{ 
-    \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/}{\texttt{github.com/felipe-tobar/OT-tutorial-MLSP-2024}}
+    \href{https://github.com/felipe-tobar/OT-tutorial/}{\texttt{github.com/felipe-tobar/OT-tutorial}}
     }
-    \item To set up your environment:
+    \item To set up your environment (OSX and Linux):
     \vspace{1em}
     \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]
     \centering
@@ -73,7 +73,7 @@
 
 
 \begin{frame}{
-\bred{OT for MLDS in a nutshell}
+\bred{OT for data analysis in a nutshell}
 }
 \bblue{Optimal Transportation theory} is a set of tools for computing distances between distributions
 \vspace{1em}
@@ -180,7 +180,7 @@ De l'Imprimerie Royale.}}
     \bred{Notation:} 
    \begin{itemize}
        \item \bblue{Piles of mass} are probability distributions, $\mu$ and $\nu$, corresponding to random variables $X\in\cX$ and $Y\in\cY$. 
-       \item \bblue{Moving procedure} is a function $T: x \in \cX\mapsto Y\in\cY$.
+       \item \bblue{Moving procedure} is a function $T: x \in \cX\mapsto y\in\cY$.
     \item \bblue{Moving cost} encoded as $c: (x,y)\in\cX\times\cY\mapsto c(x,y)\in\R$.
    \end{itemize}
 \vspace{1em}
@@ -247,7 +247,7 @@ De l'Imprimerie Royale.}}
         \includegraphics[width=0.7\textwidth]{../img/existence_uniqueness.pdf}
     \end{figure}
     \vspace{1em}
-\bred{Remark:} When both distributions have the same number of atoms and they all \emph{weight the same}, e.g., pixels or class instances, Monge's formulation can be solved. However, when dealing with \emph{weighted samples}. In such cases, \textbf{Monge's map might be unable to transport the mass.}
+\bred{Remark:} When both distributions have the same number of same-weight atoms, e.g., pixels or class instances, Monge's formulation can be solved. However, when dealing with different number of \emph{weighted samples}, \textbf{Monge's map might be unable to transport the mass.}
 \end{frame}
 
 
