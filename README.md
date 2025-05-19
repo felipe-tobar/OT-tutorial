@@ -10,7 +10,7 @@ This repository hosts the material for the tutorials on Optimal Transport that I
 
 
 
-To replicate the Conda environment used in the experiments, use these files (`conda env create -f file_name.yml`): 
+To replicate the Conda environment used in the experiments, use these files (run `conda env create -f file_name.yml`): 
 [OSX](https://github.com/felipe-tobar/OT-tutorial/blob/main/Codes/environment_osx.yml)
 [Linux](https://github.com/felipe-tobar/OT-tutorial/blob/main/Codes/environment_linux.yml)
 
