@@ -6,7 +6,7 @@ This repository hosts the material for the tutorials on Optimal Transport that I
 
 - **04/02/25.** Optimal Transport for Machine Learning and Data Analysis, *Imperial-X AI: Cutting-Edge Tutorial Series*. [Slides here ](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/talk_IX.pdf).
 
-- **22/05/25.** A hands-on tutorial on Optimal Transport, *Machine Learning and Global Health Network*. [Slides here](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/talk_MLGH.pdf).
+- **(upcoming) 22/05/25.** A hands-on tutorial on Optimal Transport, *Machine Learning and Global Health Network*. [Slides here](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/talk_MLGH.pdf).
 
 
 
