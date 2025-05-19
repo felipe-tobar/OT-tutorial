@@ -57,11 +57,11 @@
     \item Tutorial repository: \bblue{ 
     \href{https://github.com/felipe-tobar/OT-tutorial/}{\texttt{github.com/felipe-tobar/OT-tutorial}}
     }
-    \item To set up your environment (OSX and Linux):
+    \item To set up your environment (tested on OSX and Linux on 19 May 2025):
     \vspace{1em}
     \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]
     \centering
-  \texttt{conda install --name OT\_talk --file conda\_environment.txt}
+  \texttt{conda env create -f environment.yml}
 \end{tcolorbox}
 
 
@@ -301,11 +301,11 @@ Feasible set:
 Algorithm:
 
 \begin{itemize}
-    \item define $\mu$ and $\nu$ with supports $s_\mu$ and $s_\nu$
-    \item check distributions are valid
-    \item Compute $C = c(s_\mu,c_\nu)$
-    \item $P^\star = \argmin \sum_{i,j}^{n,m} C_{ij}P_{ij} $
-    \item $d = \sum_{i,j}^{n,m} C_{ij}P^\star_{ij}$ 
+    \item Input: $\mu$ and $\nu$ with supports $s_\mu$ and $s_\nu$
+    \item Check distributions are valid
+    \item Compute $C = c(s_\mu,s_\nu)$
+    \item Soln: $P^\star = \argmin \sum_{i,j}^{n,m} C_{ij}P_{ij} $
+    \item Overall cost: $d = \sum_{i,j}^{n,m} C_{ij}P^\star_{ij}$ 
 \end{itemize}
 \end{minipage}
 
@@ -529,14 +529,15 @@ $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi
 $$\pi_{\varepsilon} = \argmin_{\pi\in\R^{n\times m}_+} \ \langle C,\pi\rangle + \varepsilon\ \Omega(\pi)$$
 \end{block}
 
-\vspace{0.2cm}Advantages of regularizing the optimization problem:
+\vspace{0.2cm}Advantages of regularizing the optimisation problem:
 \begin{itemize}
-\item[$\bullet$] Fast solutions
-\item[$\bullet$] Encoding of prior knowledge on the data.
-\item[$\bullet$] For statistical purposes: smooth the distance estimation
+\item[$\bullet$] Fast and \emph{smoother} solutions
+\item[$\bullet$] Encoding task's prior knowledge
 \item[$\bullet$] Better posed problem (convexity, stability).
 \end{itemize}
+\vspace{1em}
 
+Regularisation functionals
 \begin{itemize}
 \item[$\bullet$] Entropic regularization [Cuturi, 2013]
 \item[$\bullet$] KL, Itakura Saito, $\beta$-divergences, [Papadakis \& Papadakis, 2018]
@@ -612,7 +613,7 @@ where $u$ and $v$ follow an alternating recursive formula.
 
 
 
-\begin{frame}{OT \emph{lifts} a distance from the ground}
+\begin{frame}{OT \emph{lifts} a distance from the measures' support}
     \bred{A family of distances between measures}\\
     \begin{minipage}{0.59\textwidth}
         The \bblue{Kantorovitch problem}
