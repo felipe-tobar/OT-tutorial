@@ -1,13 +1,20 @@
 # A tutorial on Optimal Transport
-## A Tutorial at the IEEE International Workshop on Machine Learning for Signal Processing
 
-This is the repository for the Tutorial on Optimal Transport for Signal Processing. The tutorial will be presented on 22 Sept 2024 at MLSP, which will take place at Imperial College (South Kensington Campus). 
+This repository hosts the material for my tutorial on Optimal Transport, including slides and Jupyter notebooks. Since 2024, the tutorial has been given as follows: 
 
-Authors: 
-- Laetitia Chapel, IRISA, Obelix team, Institut Agro Rennes-Angers
-- Felipe Tobar, Initiative for Data & Artificial Intelligence, Universidad de Chile
+## 22/09/24: IEEE International Workshop on Machine Learning for Signal Processing
+Given jointly with Laetitia Chapel, IRISA, Obelix team, Institut Agro Rennes-Angers
+[Slides here ](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/MLSP_talk.pdf)
 
-[Link to slides here](https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/slides/presentation.pdf)
+## 04/02/25: Imperial-X AI: Cutting-Edge Tutorial Series
+[Slides here ](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/IX_talk.pdf)
 
-To replicate the Conda environment used in the experiments, use [this file](https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/conda_environment.txt)
+## 22/05/25:  Machine Learning and Global Health Network
+[Slides here ](https://github.com/felipe-tobar/OT-tutorial/blob/main/slides/MLGH_talk.pdf)
+
+
+
+To replicate the Conda environment used in the experiments, use these files: 
+[OSX](https://github.com/felipe-tobar/OT-tutorial/blob/main/conda_environment_osx.txt)
+[Linux](https://github.com/felipe-tobar/OT-tutorial/blob/main/conda_environment_linux.txt)
 
