@@ -52,12 +52,12 @@
 \begin{frame}
 \bred{Preliminary remarks}
 \begin{itemize}
-    \item Based on the Tutorial \bblue{Optimal Transport for Signal Processing} given at IEEE MLSP 2024 w/ Laetitia Chapel
+    \item Based on the Tutorial \bblue{Optimal Transport for Signal Processing} given at IEEE MLSP 2024 w/ Laetitia Chapel (IRISA)
     \item Examples based on \bblue{POT: Python Optimal Transport Toolbox} (\href{https://pythonot.github.io/}{\texttt{pythonot.github.io}})
     \item Tutorial repository: \bblue{ 
     \href{https://github.com/felipe-tobar/OT-tutorial/}{\texttt{github.com/felipe-tobar/OT-tutorial}}
     }
-    \item To set up your environment (tested on OSX and Linux on 19 May 2025):
+    \item To clone the tutorial's \texttt{conda} environment, run: (tested on OSX and Linux):
     \vspace{1em}
     \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]
     \centering
@@ -89,7 +89,7 @@
 \begin{itemize}
     \item it gives a geometric-based view of probability distributions 
     \item it enhances the machine learning (generative models), and data analysis (histograms) toolboxes.
-    \item it addresses shortcomings of previous distances
+    \item it addresses shortcomings of other divergences
     \item it is beautiful (but that's subjective)
 \end{itemize}
 \end{minipage}
@@ -234,7 +234,7 @@ De l'Imprimerie Royale.}}
  \node at(6,0.5) {$T\#{\color{red!50} \mu} = {\color{blue!50} \nu}$};
   \node at(6.3,0.2) {i.e., ${\color{red!50} \mu(A)} = {\color{blue!50} \nu(B)}$};
 \end{tikzpicture}\\
-\flushright{\small {(figure adapted from \href{https://www.damtp.cam.ac.uk/research/cia/files/teaching/Optimal_Transport_Notes.pdf}{Thorpe's book})}}
+\flushright{\tiny {\href{https://www.damtp.cam.ac.uk/research/cia/files/teaching/Optimal_Transport_Notes.pdf}{(figure adapted from: Matthew Thorpe, \emph{Introduction to Optimal Transport} 2018})}}
 \end{frame}
 
 
@@ -251,7 +251,7 @@ De l'Imprimerie Royale.}}
 \end{frame}
 
 
-\begin{frame}{Kantorovich formulation: \onslide<3>{mass splitting}}
+\begin{frame}{Kantorovich relaxation: \onslide<3>{mass splitting}}
 
      \begin{figure}
         \includegraphics<1>[width=0.6\textwidth]{../img/wine_assignment.pdf}
@@ -279,15 +279,14 @@ where $\Pi_{\mu,\nu}  = \{  P\in {[0,1]}^{m\times n} :  \sum_{i=1}^m P_{ij} = \n
  
 
 \begin{frame}{\bred{Example 0:} Compute transport plan (no toolbox)}
-    Computing the OT requires solving a linear problem
-
+    Computing the OT requires solving the linear problem:
 \begin{minipage}{0.49\textwidth}  
 \begin{equation*}
-    \hspace{-2em}\OT{(\mu,\nu)} = \inf_{P\in\Pi_{\mu,\nu}}  \sum_{i,j}^{n,m} C_{ij}P_{ij} 
+    \hspace{-2em}\OT{(\mu,\nu)} = \inf_{P\in\Pi_{\mu,\nu}}  \sum_{i,j}^{n,m} C_{ij}P_{ij}, 
 \end{equation*}
 subject to
 \begin{equation*}
-    0\leq P_{ij} \leq 1, \sum_{i=1}^m P_{ij} = \nu_j,  \sum_{j=1}^n P_{ij} = \mu_i
+    0\leq P_{ij} \leq 1, \sum_{i=1}^m P_{ij} = \nu_j,  \sum_{j=1}^n P_{ij} = \mu_i.
 \end{equation*}
 Feasible set:
 \begin{figure}
@@ -379,38 +378,6 @@ Algorithm:
 
 
 
-\begin{frame}[plain]{\bred{Example 3:} Colour transfer}
-\begin{minipage}{0.4\textwidth}
-\vspace{1em}
-\bblue{Original images}
-    \begin{figure}
-        \includegraphics[width=0.9\textwidth]{../img/ex1_original_images.pdf}
-    \end{figure}
-
-\bblue{Histograms}
-    \begin{figure}
-        \includegraphics[width=0.9\textwidth]{../img/ex1_colour_histograms.pdf}
-    \end{figure}
-    
-\end{minipage}
-\hfill
-\begin{minipage}{0.56\textwidth}
-\qquad\bblue{Transported images}
-    \begin{figure}
-        \includegraphics[width=0.99\textwidth]{../img/ex1_result.pdf}
-    \end{figure}
-\end{minipage}
-
-\begin{textblock}{0.45}(0.01,0.56)
-\small
-\bred{
-\underline{
-    Notebook: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/Colour_transfer.ipynb}{Colour\_transfer.ipynb}
-}}
-\end{textblock}
-\end{frame}
-
-
 \begin{frame}{\bred{Motivation:}  Domain  adaptation}
 
 \begin{minipage}{0.49\textwidth}
@@ -456,7 +423,7 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 
 
-\begin{frame}{\bred{Example 4:} Domain adaptation}
+\begin{frame}{\bred{Example 3:} Domain adaptation}
 
 \begin{minipage}{0.49\textwidth}
 \vspace{1em}
@@ -491,15 +458,48 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 
 
+\begin{frame}[plain]{\bred{Example 4:} Colour transfer}
+\begin{minipage}{0.4\textwidth}
+\vspace{-2em}
+\bblue{Original images}
+    \begin{figure}
+        \includegraphics[width=0.9\textwidth]{../img/ex1_original_images.pdf}
+    \end{figure}
+\vspace{-1em}
+\bblue{Histograms}
+    \begin{figure}
+        \includegraphics[width=0.9\textwidth]{../img/ex1_colour_histograms.pdf}
+    \end{figure}
+    
+\end{minipage}
+\hfill
+\begin{minipage}{0.56\textwidth}
+\qquad\bblue{Transported images}
+    \begin{figure}
+        \includegraphics[width=0.99\textwidth]{../img/ex1_result.pdf}
+    \end{figure}
+\end{minipage}
+
+\begin{textblock}{0.45}(0.01,0.5)
+\small
+\bred{
+\underline{
+    Notebook: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/Colour_transfer.ipynb}{Colour\_transfer.ipynb}
+}}\vspace{0.3em}
+\tiny{Ferradans, S., Papadakis, N., Peyre, G., \& Aujol, J. F. (2014). Regularized discrete optimal transport. \emph{SIAM Journal on Imaging Sciences}, 7(3), 1853-1882.}
+\end{textblock}
+\end{frame}
+
+
 
 
 
 \begin{frame}{Remarks} 
     \begin{itemize}
-        \item We've been using the cost $c(x,y) = |x-y|^p, p\geq 1$. Then, if $\mu$ and $\nu$ are absolutely continuous wrt the Lebesgue measure, the Kantorovich problem as a unique solution. Furthermore, this solution is the same solution of the Monge problem.
-        \item If $p=2$, the optimal map is the gradient of a convex function
-        \item In some cases the optimal plan will require to split mass (e.g., in the case of atomic measures) and thus Monge's solution may fail to exist. 
-        \item Luckily, from a (Kantorovich) transport plan we can always extract a transport map, e.g., via the barycentric projection
+        \item We've been using the cost $c(x,y) = |x-y|^p, p\geq 1$. In this case, if $\mu$ and $\nu$ are absolutely continuous wrt the Lebesgue measure, the Kantorovich problem has a unique solution. Furthermore, this solution coincides with that of Monge's problem.
+        \item If $p=2$, the optimal map is the gradient of a convex function, thus \emph{preserving orientation}
+        \item In some cases, the optimal plan will require to mass splitting (e.g., in the case of atomic measures) and thus Monge's solution may fail to exist. 
+        \item From a (Kantorovich) transport plan we can always extract a transport map, e.g., via the barycentric projection
     \end{itemize}
 \end{frame}
 
