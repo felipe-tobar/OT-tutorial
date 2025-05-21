@@ -67,7 +67,7 @@
 
 \end{itemize}
 \vspace{3em}
-\bblue{$\infty$ thanks to:} Elsa Cazelles (Toulouse), Fernando Fetis (U.~Chile), Marco Cuturi (Apple/ENSAE), Rémi Flamary (École Polytechnique) 
+\bblue{$\infty$ thanks to:} Elsa Cazelles (Toulouse, CNRS), Fernando Fetis (U.~Chile), Marco Cuturi (Apple/ENSAE), Rémi Flamary (École Polytechnique), Gabriel Peyré (ENS, CNRS) 
 
 \end{frame}
 
@@ -119,8 +119,13 @@ probability theory, and more. \\
 
 \bblue{A number of Fields Medals (2010+)}  Villani, Hairer, Figalli\\
 
-\bblue{Cuturi, Peyré \& others (2013+):} Breakthrough in Machine Learning
-
+\bblue{Cuturi, Peyré \& others (2013+):} Breakthrough in Machine Learning\\
+\vspace{1em}
+\bred{Recommended books:}
+\begin{itemize}
+    \item G.~Peyré \& M.~Cuturi, \emph{Computational Optimal Transport}, 2018.
+    \item C.~Villani, \emph{Optimal Transport: Old and New}, 2009.
+\end{itemize}
 \end{frame}
 
 
@@ -179,7 +184,7 @@ De l'Imprimerie Royale.}}
 \begin{minipage}[t]{0.69\textwidth}
     \bred{Notation:} 
    \begin{itemize}
-       \item \bblue{Piles of mass} are probability distributions, $\mu$ and $\nu$, corresponding to random variables $X\in\cX$ and $Y\in\cY$. 
+       \item \bblue{Piles of mass} are probability distributions, $\er{\mu}$ and $\eb{\nu}$, corresponding to random variables $X\in\cX$ and $Y\in\cY$. 
        \item \bblue{Moving procedure} is a function $T: x \in \cX\mapsto y\in\cY$.
     \item \bblue{Moving cost} encoded as $c: (x,y)\in\cX\times\cY\mapsto c(x,y)\in\R$.
    \end{itemize}
@@ -188,9 +193,9 @@ De l'Imprimerie Royale.}}
     \bred{Optimise} 
   the total transport cost
     \begin{equation}
-        \OT{(\mu,\nu)} = \min_{T\in M_{X,Y}}\sum_{x\in\cX} c(x_i, T(x_i)),
+        \OT{(\er{\mu},\eb{\nu})} = \min_{T\in M_{X,Y}}\sum_{x\in\cX} c(x_i, T(x_i)),
     \end{equation}
-     where $M_{X,Y} = \{ T: \cX \to \cY,\ s.t.,\ T_{\#\mu}=\nu \}$ is the space of \emph{admissible transport maps}.
+     where $M_{X,Y} = \{ T: \cX \to \cY,\ s.t.,\ T_{\#\er{\mu}}=\eb{\nu} \}$ is the space of \emph{admissible transport maps}.
 \end{minipage}   
 \hfill
 \begin{minipage}[t]{0.3\textwidth}
@@ -216,7 +221,7 @@ De l'Imprimerie Royale.}}
 \begin{frame}{The transport map (aka the \emph{pushforward} operator $T_\#$)}
     $T$ \emph{transports} mass from $\cX$ to $\cY$, meaning that for any subset $A\in\cY$, one has 
     \begin{equation}
-        \nu(A) = \mu(T^{-1}(A)),
+        \eb{\nu}(A) = \er{\mu}(T^{-1}(A)),
     \end{equation}
     where $T^{-1}(A)=\{x\in\cX, s.t.\ T(x)\in A \}$ is the preimage of $A$ under $T$.
 \vspace{2em}
@@ -251,7 +256,7 @@ De l'Imprimerie Royale.}}
 \end{frame}
 
 
-\begin{frame}{Kantorovich relaxation: \onslide<3>{mass splitting}}
+\begin{frame}{\onslide<3>{Kantorovich relaxation: mass splitting}}
 
      \begin{figure}
         \includegraphics<1>[width=0.6\textwidth]{../img/wine_assignment.pdf}
@@ -260,7 +265,7 @@ De l'Imprimerie Royale.}}
     \end{figure}
 \end{frame} 
 
-\begin{frame}{Kantorovich's \emph{transport plan}} 
+\begin{frame}[plain]{Kantorovich's \emph{transport plan}} 
 \begin{textblock}{0.35}(0.72,0.02)
      \begin{figure}
         \includegraphics[width=0.6\textwidth]{../img/wine_assignment_split.pdf}
@@ -268,12 +273,14 @@ De l'Imprimerie Royale.}}
 \end{textblock}
 
 \begin{equation*}
-    \hspace{-2em}\OT{(\mu,\nu)} = \inf_{P\in\Pi_{\mu,\nu}} \langle P , C\rangle = \sum_{i,j}^{n,m} C_{ij}P_{ij} 
+    \hspace{-2em}\OT{(\er{\mu},\eb{\nu})} = \inf_{P\in\Pi_{\er{\mu},\eb{\nu}}} \langle P , C\rangle = \sum_{i,j}^{n,m} C_{ij}P_{ij},
 \end{equation*}
-where $\Pi_{\mu,\nu}  = \{  P\in {[0,1]}^{m\times n} :  \sum_{i=1}^m P_{ij} = \nu_j,  \sum_{j=1}^n P_{ij} = \mu_i \}$
+where $\Pi_{\er{\mu},\eb{\nu}}  = \{  P\in {[0,1]}^{m\times n} :  \sum_{i=1}^m P_{ij} = \eb{\nu_j},  \sum_{j=1}^n P_{ij} = \er{\mu_i} \}$
     \begin{figure}
         \includegraphics[width=0.9\textwidth]{../img/kantorovich.pdf}
     \end{figure}
+
+{\small \textbf{NB:} $\Pi_{\er{\mu},\eb{\nu}}$ always has at least one element - which one?}
 \end{frame}
 
  
@@ -282,11 +289,11 @@ where $\Pi_{\mu,\nu}  = \{  P\in {[0,1]}^{m\times n} :  \sum_{i=1}^m P_{ij} = \n
     Computing the OT requires solving the linear problem:
 \begin{minipage}{0.49\textwidth}  
 \begin{equation*}
-    \hspace{-2em}\OT{(\mu,\nu)} = \inf_{P\in\Pi_{\mu,\nu}}  \sum_{i,j}^{n,m} C_{ij}P_{ij}, 
+    \hspace{-2em}\OT{(\er{\mu},\eb{\nu})} = \inf_{P\in\Pi_{\er{\mu},\eb{\nu}}}  \sum_{i,j}^{n,m} C_{ij}P_{ij}, 
 \end{equation*}
 subject to
 \begin{equation*}
-    0\leq P_{ij} \leq 1, \sum_{i=1}^m P_{ij} = \nu_j,  \sum_{j=1}^n P_{ij} = \mu_i.
+    0\leq P_{ij} \leq 1, \sum_{i=1}^m P_{ij} = \eb{\nu_j},  \sum_{j=1}^n P_{ij} = \er{\mu_i}.
 \end{equation*}
 Feasible set:
 \begin{figure}
@@ -300,9 +307,9 @@ Feasible set:
 Algorithm:
 
 \begin{itemize}
-    \item Input: $\mu$ and $\nu$ with supports $s_\mu$ and $s_\nu$
+    \item Input: $\er{\mu}$ and $\eb{\nu}$ with supports $s_\er{\mu}$ and $s_\eb{\nu}$
     \item Check distributions are valid
-    \item Compute $C = c(s_\mu,s_\nu)$
+    \item Compute $C = c(s_\er{\mu},s_\eb{\nu})$
     \item Soln: $P^\star = \argmin \sum_{i,j}^{n,m} C_{ij}P_{ij} $
     \item Overall cost: $d = \sum_{i,j}^{n,m} C_{ij}P^\star_{ij}$ 
 \end{itemize}
@@ -378,7 +385,7 @@ Algorithm:
 
 
 
-\begin{frame}{\bred{Motivation:}  Domain  adaptation}
+\begin{frame}{\bred{Application:}  Domain  adaptation}
 
 \begin{minipage}{0.49\textwidth}
 \vspace{1em}
@@ -496,9 +503,9 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 \begin{frame}{Remarks} 
     \begin{itemize}
-        \item We've been using the cost $c(x,y) = |x-y|^p, p\geq 1$. In this case, if $\mu$ and $\nu$ are absolutely continuous wrt the Lebesgue measure, the Kantorovich problem has a unique solution. Furthermore, this solution coincides with that of Monge's problem.
+        \item When using the cost $c(x,y) = |x-y|^p, p\geq 1$, if $\er{\mu}$ and $\eb{\nu}$ are absolutely continuous wrt the Lebesgue measure, the Kantorovich problem has a unique solution. Furthermore, this solution coincides with that of Monge's problem.
         \item If $p=2$, the optimal map is the gradient of a convex function, thus \emph{preserving orientation}
-        \item In some cases, the optimal plan will require to mass splitting (e.g., in the case of atomic measures) and thus Monge's solution may fail to exist. 
+        \item In some cases, the optimal plan will require mass splitting (e.g., in the case of atomic measures) and thus Monge's solution may fail to exist. 
         \item Luckily, from a (Kantorovich) transport plan we can always extract a transport map, e.g., via the barycentric projection
     \end{itemize}
 \end{frame}
@@ -506,6 +513,11 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 
 
+
+\begin{frame}[plain]
+\vspace{2em}
+    \Large \bblue{Questions?}
+\end{frame}
 
 
 
@@ -523,36 +535,36 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 
 
-\begin{frame}{OT between Gaussians}
+\begin{frame}{Special case 1: OT between Gaussians}
 \small 
-If the measures have densities of the form
+Consider $C(x_i,y_j) =||x_i-y_j||_2^2$. If the measures have densities of the form
 \begin{align*}
 \centering
  \er{\mu}(x) &= \frac{1}{\sqrt{(2\pi)^d |\er{\Sigma_\mu}|}}\exp\left(-\frac{1}{2} (x-\er{m_\mu})^\top\er{\Sigma_\mu}^{-1}(x-\er{m_\mu}) \right)\\
  \eb{\nu}(x) &= \frac{1}{\sqrt{(2\pi)^d |\eb{\Sigma_\nu}|}}\exp\left(-\frac{1}{2} (x-\eb{m_\nu})^\top\eb{\Sigma_\nu}^{-1}(x-\eb{m_\nu}) \right),
 \end{align*}
 
-\begin{itemize}
+\begin{enumerate}
     \item The optimal transport exists (since Gaussians are a.c.) and has closed form given by 
     \begin{equation}
         x \mapsto \eb{m_\nu} + A(x-\er{m_\mu}),
     \end{equation}
-    where $A = \er{\Sigma^{-1/2}_\mu}\left(\er{\Sigma^{1/2}_\mu}\eb{\Sigma_\nu}\er{\Sigma^{1/2}_\mu}\right)^{1/2}\er{\Sigma^{-1/2}_\mu}$
-    \item The OT cost (using the Euclidean ground cost) is: 
+    where $A = \er{\Sigma^{-1/2}_\mu}\left(\er{\Sigma^{1/2}_\mu}\eb{\Sigma_\nu}\er{\Sigma^{1/2}_\mu}\right)^{1/2}\er{\Sigma^{-1/2}_\mu}$.
+    \item The OT cost is: 
     \begin{equation}
         W_2(\er{\mu}, \eb{m_\nu}) = ||\er{m_\mu}-\eb{m_\nu}||^2_2 + \Tr\left(\er{\Sigma_\mu}+\eb{\Sigma_\nu} -2\left(\er{\Sigma^{1/2}_\mu}\eb{\Sigma_\nu}\er{\Sigma^{1/2}_\mu}\right)^{1/2} \right).
     \end{equation}
     \item In the 1D case: $  x \mapsto \eb{m_\nu} + \frac{\eb{\sigma_\nu}}{\er{\sigma_\mu}}(x-\er{m_\mu}),$ and $W_2(\er{\mu}, \eb{m_\nu})  = ||\er{m_\mu}-\eb{m_\nu}||^2_2 + \Tr\left(\er{\sigma^2_\mu}+\eb{\sigma^2_\nu} -2\sqrt{\er{\sigma^2_\mu}\eb{\sigma^2_\nu}} \right).$
-\end{itemize}
+\end{enumerate}
 
 \end{frame}
-\begin{frame}{The one-dimensional case}
+\begin{frame}{Special case 2: One-dimensional measures}
 \small
-\only<1>{The optimal transport is \textbf{closed-form} between \textbf{one-dimensional} probability distributions
+\only<1>{The optimal transport is \textbf{closed-form} between \textbf{one-dimensional} probability distributions.
 \begin{center}
 \includegraphics[scale = 0.3]{../img/1dim_data.pdf}
 \end{center}
-We denote $F_{\mu}^{-}:[0,1]\to\R$ the generalized inverse of the cumulative distribution function (i.e. quantile function):
+We denote $F_{\mu}^{-}:[0,1]\to\R$ the inverse of the cumulative distribution function (i.e. quantile function):
 $$\forall t\in[0,1], \ F_{\mu}^{-}(t) = \min_{x}\ \{x\in\R : F_{\mu}(x)\geq t\}.$$
 Then
 $$W_p^p(\er{\mu},\eb{\nu}) = \int_{0}^1 (\er{F_{\mu}^{-}}(t) - \eb{F_{\nu}^{-}}(t))^p dt = \Vert \er{F_{\mu}^{-}}-\eb{F_{\nu}^{-}}\Vert_{L^p[0,1]}.$$ 
@@ -582,8 +594,8 @@ $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi
 \end{block}
 
 \vspace{0.3cm}\begin{itemize}
-\item[$\bullet$] Linear problem: it can be rewritten in a vectorial form $\min_{t\geq 0} F(t) = c^Tt$
-\item[$\bullet$] Linear constraints of the form $\pi\mathds{1}_m =\er{\mu}$ and $\pi^T\mathds{1}_n=\eb{\nu}$
+\item[$\bullet$] Linear problem: it can be rewritten in a vectorial form $\min_{t\geq 0} F(t) = c^\top t$
+\item[$\bullet$] with linear constraints of the form $\pi\mathds{1}_m =\er{\mu}$ and $\pi^T\mathds{1}_n=\eb{\nu}$
 \end{itemize}
 \vspace{0.5em}
 \bred{Warning:} 
@@ -591,6 +603,8 @@ $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi
     \item[$\rbullet$] Linear problem + linear constraints: complexity is $\mathcal{O}(n^3\log(n))$
     \item[$\rbullet$] Solutions are sparse, quasi-deterministic, matrices given by the vertex of $\Pi(\er{\mu},\eb{\nu})$
 \end{itemize}
+\vspace{0.5em}
+\centerline{\bf these issues can be addressed by regularising the solution}
 \end{frame}
 
 \begin{frame}{Intuition into entropy-regularised OT (1/2)}
@@ -598,7 +612,7 @@ $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi
 
 
     \begin{minipage}{0.49\textwidth}
-        1) For $\alpha\in\R_+$, let us define $$\Pi_\alpha(\er{\mu},\eb{\nu}) = \{\pi\in \Pi(\er{\mu},\eb{\nu}) | KL(\pi||\mu\otimes\nu)\leq \alpha\}$$ and consider the constrained problem $$\pi^\star_\alpha = \argmin_{\pi\in \Pi_\alpha(\er{\mu},\eb{\nu})} \langle C,\pi\rangle.$$  
+        1) For $\alpha\in\R_+$, let us define $$\Pi_\alpha(\er{\mu},\eb{\nu}) = \{\pi\in \Pi(\er{\mu},\eb{\nu}) ~|~ \text{KL}(\pi||\mu\otimes\nu)\leq \alpha\},$$ and consider the constrained problem $$\pi^\star_\alpha = \argmin_{\pi\in \Pi_\alpha(\er{\mu},\eb{\nu})} \langle C,\pi\rangle.$$  
     \end{minipage}
     \hfill
     \begin{minipage}{0.49\textwidth}
@@ -606,7 +620,7 @@ $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi
         \includegraphics[width=0.6\textwidth]{../img/polytope2.pdf}
     \end{minipage}
 
-2) Recall that $KL(\pi||\mu\otimes\nu) = \sum_{ij} \pi_{ij} \log\frac{\pi_{ij}}{\mu_i\nu_j} \propto \sum_{ij} \pi_{ij} \log\pi_{ij} = -h(\pi)$. Therefore, a Langrangian formulation implies:
+2) Recall that $\text{KL}(\pi||\mu\otimes\nu) = \sum_{ij} \pi_{ij} \log\frac{\pi_{ij}}{\mu_i\nu_j} \propto \sum_{ij} \pi_{ij} \log\pi_{ij} = -h(\pi)$. Therefore, a Langrangian formulation implies:
 $$\pi^\star_\alpha = \argmin_{\pi\in \Pi_\alpha(\er{\mu},\eb{\nu})} \ \langle C,\pi\rangle - \frac{1}{\lambda} h(\pi),$$
 where there is one, and only one, $\alpha\in\R_+$ for each $\lambda\in\R_+$.
 
@@ -626,7 +640,7 @@ and thus $\partial \mathcal{L} / \partial \pi_{ij} = 0 \Rightarrow \pi_{ij} = e^
 $$\pi_\lambda^* = \diag(u) K \diag(v).$$
 where $K= \exp\left(-\lambda C \right) $. \\
 
-Finding $u$ and $v$ is not easy. However, [Sinkhorn, 1964] states that since the entries of $K$ are positive, there is an unique $K$ such that $\diag(u) K \diag(v)\in\Pi(\er{\mu},\eb{\nu})$. Therefore, $u,v$ need to be modified such that $\diag(u) K \diag(v)$ is projectd onto $\Pi(\er{\mu},\eb{\nu})$, that is (Sinkhorn iterations),
+Finding $u$ and $v$ is not easy. However, [Sinkhorn, 1964] states that since the entries of $K$ are positive, there is an unique $K$ such that $\diag(u) K \diag(v)\in\Pi(\er{\mu},\eb{\nu})$. Therefore, $u,v$ need to be modified such that $\diag(u) K \diag(v)$ is projected onto $\Pi(\er{\mu},\eb{\nu})$, that is (Sinkhorn iterations),
 \begin{equation}
     (u,v) \leftarrow (\mu./Kv, \nu./K'u ).
 \end{equation}
@@ -638,7 +652,7 @@ Marco Cuturi, Sinkhorn distances: Lightspeed computation of Optimal Transport, \
 
 
 
-\begin{frame}{\bred{Example 5:} Sinkhorn regularisation and effect}
+\begin{frame}{\bred{Example 5:} Regularised OT via Sinkhorn}
 
 \begin{minipage}{0.49\textwidth}  
 \begin{figure}
@@ -702,11 +716,13 @@ Marco Cuturi, Sinkhorn distances: Lightspeed computation of Optimal Transport, \
             \includegraphics[trim={2cm 2cm 2cm 2cm},clip, width=0.9\textwidth]{../img/horizontal_distance.pdf}
         \end{figure}
         \centering
+    \iffalse 
         \small
     \bred{
     \underline{
         Notebook: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/Horizontal distance.ipynb}{Horizontal distance.ipynb}
     }}
+    \fi 
     \end{minipage}
     
     %We need a distance, OT provides one. Show how some \emph{strong} topologies cannot be used for learning systems
@@ -714,8 +730,8 @@ Marco Cuturi, Sinkhorn distances: Lightspeed computation of Optimal Transport, \
 
 \begin{frame}{The Wasserstein distance (vs others)}
     \begin{itemize}
-        \item Does not need overlapping support (as KL)
-        \item Determines the \emph{degree of dissimilarity} between distributions
+        \item It does not need overlapping support (as KL)
+        \item It measures \emph{horizontal  displacement} between distributions
     \end{itemize}
     \begin{figure}
         \centering
