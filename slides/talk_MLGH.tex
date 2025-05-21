@@ -48,7 +48,7 @@
 \end{frame}
 
 
-\section{Introduction}
+\section*{Introduction}
 \begin{frame}
 \bred{Preliminary remarks}
 \begin{itemize}
@@ -111,7 +111,7 @@
   \includegraphics[height=2cm]{../img/deblais}\vspace{0.2cm}
   \end{center}
 
-\bblue{Leonid Kantorovich (1942):} Generalisation of Monge's and dual formulation\\
+\bblue{Leonid Kantorovich (1942):} Relaxation of Monge's and dual formulation\\
 
 
 \bblue{Yann Brenier (1987):} Connections w/ PDEs, fluid mechanics,
@@ -119,7 +119,7 @@ probability theory, and more. \\
 
 \bblue{A number of Fields Medals (2010+)}  Villani, Hairer, Figalli\\
 
-\bblue{Marco Cuturi (2013):} Breakthrough in Machine Learning
+\bblue{Cuturi, Peyré \& others (2013+):} Breakthrough in Machine Learning
 
 \end{frame}
 
@@ -499,7 +499,7 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
         \item We've been using the cost $c(x,y) = |x-y|^p, p\geq 1$. In this case, if $\mu$ and $\nu$ are absolutely continuous wrt the Lebesgue measure, the Kantorovich problem has a unique solution. Furthermore, this solution coincides with that of Monge's problem.
         \item If $p=2$, the optimal map is the gradient of a convex function, thus \emph{preserving orientation}
         \item In some cases, the optimal plan will require to mass splitting (e.g., in the case of atomic measures) and thus Monge's solution may fail to exist. 
-        \item From a (Kantorovich) transport plan we can always extract a transport map, e.g., via the barycentric projection
+        \item Luckily, from a (Kantorovich) transport plan we can always extract a transport map, e.g., via the barycentric projection
     \end{itemize}
 \end{frame}
 
@@ -508,68 +508,131 @@ Adaptation. \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
 
 
 
+
+
+\section{Part II \\ Calculation of OT}
+
+\begin{frame}
+\vspace{2em}
+    \Large \bblue{Part II \\ Calculation of OT}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{OT between Gaussians}
+\small 
+If the measures have densities of the form
+\begin{align*}
+\centering
+ \er{\mu}(x) &= \frac{1}{\sqrt{(2\pi)^d |\er{\Sigma_\mu}|}}\exp\left(-\frac{1}{2} (x-\er{m_\mu})^\top\er{\Sigma_\mu}^{-1}(x-\er{m_\mu}) \right)\\
+ \eb{\nu}(x) &= \frac{1}{\sqrt{(2\pi)^d |\eb{\Sigma_\nu}|}}\exp\left(-\frac{1}{2} (x-\eb{m_\nu})^\top\eb{\Sigma_\nu}^{-1}(x-\eb{m_\nu}) \right),
+\end{align*}
+
+\begin{itemize}
+    \item The optimal transport exists (since Gaussians are a.c.) and has closed form given by 
+    \begin{equation}
+        x \mapsto \eb{m_\nu} + A(x-\er{m_\mu}),
+    \end{equation}
+    where $A = \er{\Sigma^{-1/2}_\mu}\left(\er{\Sigma^{1/2}_\mu}\eb{\Sigma_\nu}\er{\Sigma^{1/2}_\mu}\right)^{1/2}\er{\Sigma^{-1/2}_\mu}$
+    \item The OT cost (using the Euclidean ground cost) is: 
+    \begin{equation}
+        W_2(\er{\mu}, \eb{m_\nu}) = ||\er{m_\mu}-\eb{m_\nu}||^2_2 + \Tr\left(\er{\Sigma_\mu}+\eb{\Sigma_\nu} -2\left(\er{\Sigma^{1/2}_\mu}\eb{\Sigma_\nu}\er{\Sigma^{1/2}_\mu}\right)^{1/2} \right).
+    \end{equation}
+    \item In the 1D case: $  x \mapsto \eb{m_\nu} + \frac{\eb{\sigma_\nu}}{\er{\sigma_\mu}}(x-\er{m_\mu}),$ and $W_2(\er{\mu}, \eb{m_\nu})  = ||\er{m_\mu}-\eb{m_\nu}||^2_2 + \Tr\left(\er{\sigma^2_\mu}+\eb{\sigma^2_\nu} -2\sqrt{\er{\sigma^2_\mu}\eb{\sigma^2_\nu}} \right).$
+\end{itemize}
+
+\end{frame}
+\begin{frame}{The one-dimensional case}
+\small
+\only<1>{The optimal transport is \textbf{closed-form} between \textbf{one-dimensional} probability distributions
+\begin{center}
+\includegraphics[scale = 0.3]{../img/1dim_data.pdf}
+\end{center}
+We denote $F_{\mu}^{-}:[0,1]\to\R$ the generalized inverse of the cumulative distribution function (i.e. quantile function):
+$$\forall t\in[0,1], \ F_{\mu}^{-}(t) = \min_{x}\ \{x\in\R : F_{\mu}(x)\geq t\}.$$
+Then
+$$W_p^p(\er{\mu},\eb{\nu}) = \int_{0}^1 (\er{F_{\mu}^{-}}(t) - \eb{F_{\nu}^{-}}(t))^p dt = \Vert \er{F_{\mu}^{-}}-\eb{F_{\nu}^{-}}\Vert_{L^p[0,1]}.$$ 
+\begin{center}
+\includegraphics[scale = 0.3]{../img/1dim_data_quant.pdf}
+\end{center}
+}
+
+\only<2>{Similarly for \textbf{discrete measures}
+\vspace{1cm}\begin{center}
+\includegraphics[scale=0.8]{../img/one_dim_discrete.pdf}
+\end{center}
+}
+\end{frame}
+
+
+
+
+
 \begin{frame}{Solving discrete OT}
+
+
 
 Let $\er{\mu}=\sum_{i=1}^n\delta_{x_i}$ and $\eb{\nu}=\sum_{j=1}^m\delta_{y_j}$
 \begin{block}{}
 $$\pi^\ast \in \underset{\pi\in\Pi(\er{\mu},\eb{\nu})}{\argmin} \ \langle C, \pi \rangle$$
 \end{block}
 
-{\vspace{0.3cm}\begin{itemize}
+\vspace{0.3cm}\begin{itemize}
 \item[$\bullet$] Linear problem: it can be rewritten in a vectorial form $\min_{t\geq 0} F(t) = c^Tt$
 \item[$\bullet$] Linear constraints of the form $\pi\mathds{1}_m =\er{\mu}$ and $\pi^T\mathds{1}_n=\eb{\nu}$
 \end{itemize}
-\vspace{0.1cm}$\Longrightarrow$ Linear problem + linear constraints: complexity is $\mathcal{O}(n^3\log(n))$}
-
-{\vspace{0.3cm}$\Longrightarrow$ Need for solvers that provide approximate solutions! See [Peyré et Cuturi 2019]}
+\vspace{0.5em}
+\bred{Warning:} 
+\begin{itemize}
+    \item[$\rbullet$] Linear problem + linear constraints: complexity is $\mathcal{O}(n^3\log(n))$
+    \item[$\rbullet$] Solutions are sparse, quasi-deterministic, matrices given by the vertex of $\Pi(\er{\mu},\eb{\nu})$
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Regularization of OT}
-\begin{block}{}
-$$\pi_{\varepsilon} = \argmin_{\pi\in\R^{n\times m}_+} \ \langle C,\pi\rangle + \varepsilon\ \Omega(\pi)$$
-\end{block}
+\begin{frame}{Intuition into entropy-regularised OT (1/2)}
+\framesubtitle{(and Sinkhorn)}
 
-\vspace{0.2cm}Advantages of regularizing the optimisation problem:
-\begin{itemize}
-\item[$\bullet$] Fast and \emph{smoother} solutions
-\item[$\bullet$] Encoding task's prior knowledge
-\item[$\bullet$] Better posed problem (convexity, stability).
-\end{itemize}
-\vspace{1em}
 
-Regularisation functionals
-\begin{itemize}
-\item[$\bullet$] Entropic regularization [Cuturi, 2013]
-\item[$\bullet$] KL, Itakura Saito, $\beta$-divergences, [Papadakis \& Papadakis, 2018]
-\end{itemize}
+    \begin{minipage}{0.49\textwidth}
+        1) For $\alpha\in\R_+$, let us define $$\Pi_\alpha(\er{\mu},\eb{\nu}) = \{\pi\in \Pi(\er{\mu},\eb{\nu}) | KL(\pi||\mu\otimes\nu)\leq \alpha\}$$ and consider the constrained problem $$\pi^\star_\alpha = \argmin_{\pi\in \Pi_\alpha(\er{\mu},\eb{\nu})} \langle C,\pi\rangle.$$  
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{../img/polytope2.pdf}
+    \end{minipage}
+
+2) Recall that $KL(\pi||\mu\otimes\nu) = \sum_{ij} \pi_{ij} \log\frac{\pi_{ij}}{\mu_i\nu_j} \propto \sum_{ij} \pi_{ij} \log\pi_{ij} = -h(\pi)$. Therefore, a Langrangian formulation implies:
+$$\pi^\star_\alpha = \argmin_{\pi\in \Pi_\alpha(\er{\mu},\eb{\nu})} \ \langle C,\pi\rangle - \frac{1}{\lambda} h(\pi),$$
+where there is one, and only one, $\alpha\in\R_+$ for each $\lambda\in\R_+$.
+
 
 \end{frame}
 
 
 
-\begin{frame}{Entropy regularized OT [Cuturi, 2013]}
-\begin{block}{}
-The solution of 
-$$\OT(\er{\mu},\eb{\nu}) = \min_{\pi\in\Pi(a,b)} \ \langle C,\pi\rangle + \varepsilon \sum_{i,j} \pi_{ij}\log(\pi_{ij})$$
-is of the form
-$$\pi_\varepsilon^* = \diag(u)\exp\left(-\frac{C}{\varepsilon}\right)\diag(v)$$
-where $u$ and $v$ follow an alternating recursive formula. 
-\end{block}
-\begin{minipage}{0.5\textwidth}
-   {\vspace{0.3cm}
-\begin{itemize}
-\item[$\bullet$] From Sinkhorn theorem [Sinkhorn, 1964], we know that $\diag(u)$ and $\diag(v)$ exist and are unique.
-\item[$\bullet$] Sinkhorn-Knopp algorithm [Knight, 2008] allows to solve it efficiently
-\end{itemize}} 
-\end{minipage}
-\hfill
-\begin{minipage}{0.49\textwidth}
-\centering
-        \includegraphics[width=0.6\textwidth]{../img/polytope2.pdf}\hspace{2em}
-\end{minipage}
 
+\begin{frame}{Intuition into entropy-regularised OT (2/2)}
+\framesubtitle{(and Sinkhorn)}
 
+3) The Lagrangian is given by 
 
+$$\mathcal{L}(\pi,\alpha,\beta) = \sum_{ij} \frac{1}{\lambda}\pi_{ij} \log\pi_{ij} + \pi_{ij}c_{ij} + \alpha^\top(\pi\mathbf{1}_m - \mu) + \beta^\top(\pi^\top\mathbf{1}_n - \nu)$$
+and thus $\partial \mathcal{L} / \partial \pi_{ij} = 0 \Rightarrow \pi_{ij} = e^{-1/2-\lambda\alpha_i}e^{-\lambda c_{ij}}e^{-1/2-\lambda\beta_j}$, meaning that the solution has the form
+$$\pi_\lambda^* = \diag(u) K \diag(v).$$
+where $K= \exp\left(-\lambda C \right) $. \\
+
+Finding $u$ and $v$ is not easy. However, [Sinkhorn, 1964] states that since the entries of $K$ are positive, there is an unique $K$ such that $\diag(u) K \diag(v)\in\Pi(\er{\mu},\eb{\nu})$. Therefore, $u,v$ need to be modified such that $\diag(u) K \diag(v)$ is projectd onto $\Pi(\er{\mu},\eb{\nu})$, that is (Sinkhorn iterations),
+\begin{equation}
+    (u,v) \leftarrow (\mu./Kv, \nu./K'u ).
+\end{equation}
+{\tiny
+Marco Cuturi, Sinkhorn distances: Lightspeed computation of Optimal Transport, \emph{NeurIPS} 2013. 
+}
 \end{frame}
 
 
@@ -602,12 +665,12 @@ where $u$ and $v$ follow an alternating recursive formula.
 
 
 
-\section{Part II\\ The Wasserstein distance and metric properties}
+\section{Part III\\ The Wasserstein distance and metric properties}
 
 
 
 \begin{frame}
-    \Large \bblue{Part II\\ The Wasserstein distance and metric properties}
+    \Large \bblue{Part III\\ The Wasserstein distance and metric properties}
 \end{frame}
 
 
@@ -731,11 +794,6 @@ where $u$ and $v$ follow an alternating recursive formula.
             \end{figure}
 \end{minipage}
 
-\vspace{2em}
-        \small
-\bred{\underline{
-        Notebook: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/Wasserstein Geodesics.ipynb}{Wasserstein Geodesics.ipynb}
-    }}
 \end{frame}
 
 \begin{frame}{Geodesic properties of the Wasserstein space}
@@ -823,14 +881,149 @@ where $u$ and $v$ follow an alternating recursive formula.
             }}
 \end{frame}
 
-\section{Part III \bred{(if time allows)}\\ OT for time series: The Wasserstein-Fourier distance}
+
+\section{Part IV \bred{(if time allows)}\\ Dual formulation \& Generative Adversarial Networks}
+
+\begin{frame}
+\centerline{\bred{(if time allows)}}
+\vspace{2em}
+    \Large \bblue{Part IV\\ Dual formulation \& Generative Adversarial Networks}
+\end{frame}
+
+
+
+\begin{frame}{Dual formulation}
+
+Recall the primal formulation: $\OT({\mu},{\nu}) = \inf _{\pi\in\Pi(\mu,\nu)} \iint c(x,y)\d\pi(x,y)$
+\begin{block}{}
+\bblue{Dual problem}
+$$\OT({\mu},{\nu}) = \sup_{(\phi,\psi)\in\Phi_c} \left(\int_{\XX} \phi d{\mu} + \int_{\XX} \psi d{\nu}\right),$$
+where
+$$\Phi_c : = \left\{(\phi,\psi)\in L_1(\mu)\times L_1(\nu),\ \mbox{s.t.}\ \phi(x) + \psi(y)\leq c(x,y)\right\}.$$
+\end{block}
+
+{\vspace{0.3cm}\begin{itemize}
+\item[$\bullet$] $\phi$ and $\psi$ are scalar function also known as \bblue{Kantorovich potentials}
+\item[$\bullet$] Primal-dual relationship: the support of $\pi\in\Pi^{\ast}(\mu,\nu)$ is such that $\phi(x)+\psi(y) = c(x,y)$.
+\end{itemize}}
+
+{\vspace{0.3cm} In the discrete setting:
+$$\int_{\XX} \phi d\left({\sum_{i=1}^n\mu_i\delta_{x_i}}\right) + \int_{\XX} \psi d\left({\sum_{j=1}^m\nu_j\delta_{y_i}}\right) = \sum_{i=1}^n\mu_i\underbrace{\phi(x_i)}_{\alpha_i} + \sum_{j=1}^m\nu_j\underbrace{\psi(y_j)}_{\beta_j}$$
+and $\Phi_c$ becomes $\{(\alpha,\beta)\in\R^n\times\R^m \ \mbox{s.t.}\ \alpha_i+\beta_j\leq c(x_i,y_j)\}$
+}
+
+\end{frame}
+
+
+
+\begin{frame}{Interpretation of Kantorovich duality (discrete)}
+$$\OT({\mu},{\nu}) = \underset{\pi\in\Pi(\mu,\nu)}{\min} \langle C, \pi \rangle = \max_{(\alpha,\beta)\in D_c} \ \langle \alpha,{\mu}\rangle + \langle \beta, {\nu}\rangle$$
+with
+$$D_c := \{(\alpha,\beta)\in\R^n\times\R^m \ \mbox{such that}\ \forall (i,j)\in\{1,\ldots,n\}\times\{1,\ldots,m\}, \alpha_i+\beta_j\leq C_{ij}\}$$
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{../img/wine_load1.pdf}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Intuition: the shipper's problem}
+One vendor sets the following:
+\begin{itemize}
+\item[$\bullet$] $\alpha_i$ = price for \textbf{loading} a kilo of grapes at place $\er{x_i}$ (no matter which plan it goes)
+\item[$\bullet$] $\beta_j$ = price for \textbf{unloading} a kilo of grapes at place $\eb{y_j}$ (no matter from which vineyard it came from)
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{../img/wine_load2.pdf}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Intuition: the shipper's problem}
+
+\begin{itemize}
+\item[$\bullet$] There are exactly $\er{\mu_i}$ units at vineyard $\er{x_i}$ and $\eb{\nu_j}$ needed at plant $\eb{y_j}$; the vendor asks the price \bblue{(that she wants to maximize!)}
+$$\langle\alpha, \er{\mu}\rangle + \langle\beta, \eb{\nu}\rangle$$
+\visible<1-2>{\item[$\bullet$] Negative price are allowed!}
+\visible<1-2>{\item[$\bullet$] Does the vendor have a competitive offer? Her pricing scheme implies that transferring one kilo of grapes from vineyard $\er{x_i}$ to plant $\eb{y_j}$ costs exactly $\alpha_i+\beta_j$.}
+\visible<2>{\item[$\bullet$] \blue{Recall the primal problem:} the cost of shipping one unit from ${x_i}$ to ${y_j}$ is $C_{i,j}$.}
+\visible<2>{\item[$\bullet$] Feasible deal for the vendor requires that  $\alpha_i+\beta_j\leq C_{ij}$.}
+\visible<2>{\item[$\bullet$] The winery checks that the vendor proposition is a better deal by
+\begin{align*}
+\sum_{i,j} \pi_{ij}C_{ij}\geq \sum_{i,j} \pi_{ij}(\alpha_j+\beta_j) &= \left(\sum_i\alpha_i\sum_j\pi_{ij}\right) + \left(\sum_j\beta_j\sum_i\pi_{ij}\right)= \langle\alpha, \mu\rangle + \langle\beta, \nu\rangle
+\end{align*}}.
+\end{itemize}
+\visible<2>{
+    \bblue{Critically, when $c(x,y) = |x-y|$,  $\alpha = -\beta$, therefore $\OT(\mu,\nu) = \max_\alpha \langle\alpha, \mu\rangle - \langle\alpha, \nu\rangle$}
+}
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{\bred{Example 5:} Wasserstein GANs}
+
+
+\begin{textblock}{0.45}(0.65,0.12)
+\bblue{\large Recall (standard) GANs}
+\end{textblock}
+\vspace{-2em}
+    \begin{figure}
+        \centering
+            \includegraphics[width=0.7\textwidth]{../img/gan_diag.pdf}
+        \end{figure}
+\bred{Notice the remarkable similarity between the objectives of the (dual) OT formulation and GANs}
+\end{frame}
+
+\begin{frame}{\bred{Example 5:} Wasserstein GANs}
+\framesubtitle{GANs vs WGANs: Implementation details}
+
+\begin{minipage}{0.32\textwidth}
+    \begin{itemize}
+        \item Discriminator loss no longer a likelihood fn 
+        \item Optimised with RMSProp
+        \item Loss for $D$ and $G$ have the same form (Kantorovich potential, $p=1$)
+        \item Discriminator's inner loop training $n_\text{critic}$ no longer equal to 1
+        \item Learned parameters are clipped to ensure $||f||_L=1$
+    \end{itemize}
+\end{minipage}
+\begin{minipage}{0.32\textwidth}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.95\textwidth]{../img/gan_mnist.pdf}
+            \centerline{\bblue{GAN}}
+        \end{figure}
+\end{minipage}
+\begin{minipage}{0.32\textwidth}
+            \begin{figure}
+        \centering
+            \includegraphics[width=0.95\textwidth]{../img/wgan_mnist.pdf}
+            \centerline{\bred{W}\bblue{GAN}}
+        \end{figure}
+\end{minipage}
+\begin{textblock}{0.45}(0.45,0.5)
+    \bred{
+    \underline{
+        Notebooks: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/gan.ipynb}{gan.ipynb} \& \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/wgan.ipynb}{wgan.ipynb} 
+    }}\end{textblock}
+
+\end{frame}
+
+
+
+\section{Part V \bred{(if time allows)}\\ OT for time series: The Wasserstein-Fourier distance}
 
 
 
 \begin{frame}
 \centerline{\bred{(if time allows)}}
 \vspace{2em}
-    \Large \bblue{Part III\\ OT for time series: The Wasserstein-Fourier distance}
+    \Large \bblue{Part V\\ OT for time series: The Wasserstein-Fourier distance}
 \end{frame}
 
 
@@ -1167,7 +1360,6 @@ where $Q$ is the quantile function of $S$. The PSD $S$ does not need to be locat
 
 \begin{frame}{What we did not see}
 \begin{itemize}
-    \item Dual formulation of the Kantorovich problem
     \item Computational OT
     \item Multimarginal OT
     \item Unbalanced OT
@@ -1220,131 +1412,6 @@ where $Q$ is the quantile function of $S$. The PSD $S$ does not need to be locat
 
 
 
-
-
-
-
-\begin{frame}{Dual formulation}
-
-Recall the primal formulation: $\OT({\mu},{\nu}) = \inf _{\pi\in\Pi(\mu,\nu)} \iint c(x,y)\d\pi(x,y)$
-\begin{block}{}
-\bblue{Dual problem}
-$$\OT({\mu},{\nu}) = \sup_{(\phi,\psi)\in\Phi_c} \left(\int_{\XX} \phi d{\mu} + \int_{\XX} \psi d{\nu}\right),$$
-where
-$$\Phi_c : = \left\{(\phi,\psi)\in L_1(\mu)\times L_1(\nu),\ \mbox{s.t.}\ \phi(x) + \psi(y)\leq c(x,y)\right\}.$$
-\end{block}
-
-{\vspace{0.3cm}\begin{itemize}
-\item[$\bullet$] $\phi$ and $\psi$ are scalar function also known as \bblue{Kantorovich potentials}
-\item[$\bullet$] Primal-dual relationship: the support of $\pi\in\Pi^{\ast}(\mu,\nu)$ is such that $\phi(x)+\psi(y) = c(x,y)$.
-\end{itemize}}
-
-{\vspace{0.3cm} In the discrete setting:
-$$\int_{\XX} \phi d\left({\sum_{i=1}^n\mu_i\delta_{x_i}}\right) + \int_{\XX} \psi d\left({\sum_{j=1}^m\nu_j\delta_{y_i}}\right) = \sum_{i=1}^n\mu_i\underbrace{\phi(x_i)}_{\alpha_i} + \sum_{j=1}^m\nu_j\underbrace{\psi(y_j)}_{\beta_j}$$
-and $\Phi_c$ becomes $\{(\alpha,\beta)\in\R^n\times\R^m \ \mbox{s.t.}\ \alpha_i+\beta_j\leq c(x_i,y_j)\}$
-}
-
-\end{frame}
-
-
-
-\begin{frame}{Interpretation of Kantorovich duality (discrete)}
-$$\OT({\mu},{\nu}) = \underset{\pi\in\Pi(\mu,\nu)}{\min} \langle C, \pi \rangle = \max_{(\alpha,\beta)\in D_c} \ \langle \alpha,{\mu}\rangle + \langle \beta, {\nu}\rangle$$
-with
-$$D_c := \{(\alpha,\beta)\in\R^n\times\R^m \ \mbox{such that}\ \forall (i,j)\in\{1,\ldots,n\}\times\{1,\ldots,m\}, \alpha_i+\beta_j\leq C_{ij}\}$$
-
-\begin{center}
-\includegraphics[width=0.9\textwidth]{../img/wine_load1.pdf}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Intuition: the shipper's problem}
-One vendor sets the following:
-\begin{itemize}
-\item[$\bullet$] $\alpha_i$ = price for \textbf{loading} a kilo of grapes at place $\er{x_i}$ (no matter which plan it goes)
-\item[$\bullet$] $\beta_j$ = price for \textbf{unloading} a kilo of grapes at place $\eb{y_j}$ (no matter from which vineyard it came from)
-\end{itemize}
-
-\begin{center}
-\includegraphics[width=0.9\textwidth]{../img/wine_load2.pdf}
-\end{center}
-
-\end{frame}
-
-\begin{frame}{Intuition: the shipper's problem}
-
-\begin{itemize}
-\item[$\bullet$] There are exactly $\er{\mu_i}$ units at vineyard $\er{x_i}$ and $\eb{\nu_j}$ needed at plant $\eb{y_j}$; the vendor asks the price \bblue{(that she wants to maximize!)}
-$$\langle\alpha, \er{\mu}\rangle + \langle\beta, \eb{\nu}\rangle$$
-\visible<1-2>{\item[$\bullet$] Negative price are allowed!}
-\visible<1-2>{\item[$\bullet$] Does the vendor have a competitive offer? Her pricing scheme implies that transferring one kilo of grapes from vineyard $\er{x_i}$ to plant $\eb{y_j}$ costs exactly $\alpha_i+\beta_j$.}
-\visible<2>{\item[$\bullet$] \blue{Recall the primal problem:} the cost of shipping one unit from ${x_i}$ to ${y_j}$ is $C_{i,j}$.}
-\visible<2>{\item[$\bullet$] Feasible deal for the vendor requires that  $\alpha_i+\beta_j\leq C_{ij}$.}
-\visible<2>{\item[$\bullet$] The winery checks that the vendor proposition is a better deal by
-\begin{align*}
-\sum_{i,j} \pi_{ij}C_{ij}\geq \sum_{i,j} \pi_{ij}(\alpha_j+\beta_j) &= \left(\sum_i\alpha_i\sum_j\pi_{ij}\right) + \left(\sum_j\beta_j\sum_i\pi_{ij}\right)= \langle\alpha, \mu\rangle + \langle\beta, \nu\rangle
-\end{align*}}.
-\end{itemize}
-\visible<2>{
-    \bblue{Critically, when $c(x,y) = |x-y|$,  $\alpha = -\beta$, therefore $\OT(\mu,\nu) = \max_\alpha \langle\alpha, \mu\rangle - \langle\alpha, \nu\rangle$}
-}
-
-
-\end{frame}
-
-
-
-
-
-\begin{frame}{\bred{Example 5:} Wasserstein GANs}
-
-
-\begin{textblock}{0.45}(0.65,0.12)
-\bblue{\large Recall (standard) GANs}
-\end{textblock}
-\vspace{-2em}
-    \begin{figure}
-        \centering
-            \includegraphics[width=0.7\textwidth]{../img/gan_diag.pdf}
-        \end{figure}
-\bred{Notice the remarkable similarity between the objectives of the (dual) OT formulation and GANs}
-\end{frame}
-
-\begin{frame}{\bred{Example 5:} Wasserstein GANs}
-\framesubtitle{GANs vs WGANs: Implementation details}
-
-\begin{minipage}{0.32\textwidth}
-    \begin{itemize}
-        \item Discriminator loss no longer a likelihood fn 
-        \item Optimised with RMSProp
-        \item Loss for $D$ and $G$ have the same form (Kantorovich potential, $p=1$)
-        \item Discriminator's inner loop training $n_\text{critic}$ no longer equal to 1
-        \item Learned parameters are clipped to ensure $||f||_L=1$
-    \end{itemize}
-\end{minipage}
-\begin{minipage}{0.32\textwidth}
-        \begin{figure}
-        \centering
-            \includegraphics[width=0.95\textwidth]{../img/gan_mnist.pdf}
-            \centerline{\bblue{GAN}}
-        \end{figure}
-\end{minipage}
-\begin{minipage}{0.32\textwidth}
-            \begin{figure}
-        \centering
-            \includegraphics[width=0.95\textwidth]{../img/wgan_mnist.pdf}
-            \centerline{\bred{W}\bblue{GAN}}
-        \end{figure}
-\end{minipage}
-\begin{textblock}{0.45}(0.45,0.5)
-    \bred{
-    \underline{
-        Notebooks: \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/gan.ipynb}{gan.ipynb} \& \href{https://github.com/felipe-tobar/OT-tutorial-MLSP-2024/blob/main/Codes/wgan.ipynb}{wgan.ipynb} 
-    }}\end{textblock}
-
-\end{frame}
 
 
 
