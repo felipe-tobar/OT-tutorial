@@ -947,8 +947,8 @@ $$D_c := \{(\alpha,\beta)\in\R^n\times\R^m \ \mbox{such that}\ \forall (i,j)\in\
 \begin{frame}{Intuition: the shipper's problem}
 One vendor sets the following:
 \begin{itemize}
-\item[$\bullet$] $\alpha_i$ = price for \textbf{loading} a kilo of grapes at place $\er{x_i}$ (no matter which plan it goes)
-\item[$\bullet$] $\beta_j$ = price for \textbf{unloading} a kilo of grapes at place $\eb{y_j}$ (no matter from which vineyard it came from)
+\item[$\bullet$] $\alpha_i$ = price for \textbf{loading} a kilo of grapes at place $\er{x_i}$ (no matter to which plant it goes)
+\item[$\bullet$] $\beta_j$ = price for \textbf{unloading} a kilo of grapes at place $\eb{y_j}$ (no matter from which vineyard it comes from)
 \end{itemize}
 
 \begin{center}
@@ -962,10 +962,10 @@ One vendor sets the following:
 \begin{itemize}
 \item[$\bullet$] There are exactly $\er{\mu_i}$ units at vineyard $\er{x_i}$ and $\eb{\nu_j}$ needed at plant $\eb{y_j}$; the vendor asks the price \bblue{(that she wants to maximize!)}
 $$\langle\alpha, \er{\mu}\rangle + \langle\beta, \eb{\nu}\rangle$$
-\visible<1-2>{\item[$\bullet$] Negative price are allowed!}
+\visible<1-2>{\item[$\bullet$] Negative price are allowed}
 \visible<1-2>{\item[$\bullet$] Does the vendor have a competitive offer? Her pricing scheme implies that transferring one kilo of grapes from vineyard $\er{x_i}$ to plant $\eb{y_j}$ costs exactly $\alpha_i+\beta_j$.}
 \visible<2>{\item[$\bullet$] \blue{Recall the primal problem:} the cost of shipping one unit from ${x_i}$ to ${y_j}$ is $C_{i,j}$.}
-\visible<2>{\item[$\bullet$] Feasible deal for the vendor requires that  $\alpha_i+\beta_j\leq C_{ij}$.}
+\visible<2>{\item[$\bullet$] A feasible deal for the vendor requires that  $\alpha_i+\beta_j\leq C_{ij}$.}
 \visible<2>{\item[$\bullet$] The winery checks that the vendor proposition is a better deal by
 \begin{align*}
 \sum_{i,j} \pi_{ij}C_{ij}\geq \sum_{i,j} \pi_{ij}(\alpha_j+\beta_j) &= \left(\sum_i\alpha_i\sum_j\pi_{ij}\right) + \left(\sum_j\beta_j\sum_i\pi_{ij}\right)= \langle\alpha, \mu\rangle + \langle\beta, \nu\rangle
@@ -1416,15 +1416,6 @@ where $Q$ is the quantile function of $S$. The PSD $S$ does not need to be locat
     \titlepage
 \end{frame}
 
-
-
-\appendix
-
-
-
-\begin{frame}
-    \Large \bblue{Appendix: what we didn't see}
-\end{frame}
 
 
 
